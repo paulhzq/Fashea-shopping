@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=""utf-8>
+    <title>{% block title %}Fashea{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+</head>
+<body>
+    <div id="header">
+        <a href="/" class="logo">Fashea</a>
+        {% if user.is_authenticated %}
+        <li style='display:inline-block;float:right;margin-right:1px'><a href="/logout" id ="logout">Logout</a></li>
+        <li style='display:inline-block;float:right;'>Welcome,{{ user }}</li>
+
+        {% else %}
+        <li style='display:inline-block;float:right;'><a href="/login" id ="login">Login</a></li>
+        {% endif %}
+    </div>
+    <div id="subheader">
+        <div class="cart">
+            {% with total_items=cart|length %}
+                {% if cart|length > 0 %}
+                    Your cart:
+                    <a href="{% url "cart:cart_detail" %}">
+                        {{ total_items }} item{{ total_items|pluralize }},
+                        ${{ cart.get_total_price }}
+                    </a>
+                {% else %}
+                   Your cart is empty.
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <div id="content">
+        {% block content %}
+        {% endblock content %}
+    </div>
+</body>
+</html>
